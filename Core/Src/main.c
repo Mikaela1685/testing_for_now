@@ -125,32 +125,6 @@ int main(void)
 	//ARR = frequency
 	//PSC = speed
 	//CCR = length of pulse (on)
-	if (count <= nSamples)
-	{
-		HAL_GPIO_WritePin(LD3_GPIO_Port, LD3_Pin, GPIO_PIN_SET); //Sets LD3 LED High, indicate capture start
-
-		//Start and Store ADC value
-		HAL_ADC_Start(&hadc1); //Start ADC poll
-		HAL_ADC_PollForConversion(&hadc1, 100);
-		adcValue = HAL_ADC_GetValue(&hadc1);
-
-		//calculate values
-		double voltage = (adcValue * 3.3) / 4095; //convert to voltage
-		double resistance = (voltage * 1000) / (3.3 - voltage); //find thermistor resistance
-		double tCelsius = (-21.21 * log((resistance) / 1000)) + 72.203;
-
-		//output to display
-		sprintf(buffer, "Temperature = %.2f C\r\n", tCelsius); //formats string and places in buffer
-		HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), 100); //prints buffer
-
-		//add delay and increment count
-		HAL_Delay(500);
-		count += 1;
-	}
-	else
-	{
-		HAL_ADC_Stop(&hadc1);
-	}
 
 	HAL_GPIO_WritePin(LD3_GPIO_Port, LD3_Pin, GPIO_PIN_RESET);
   }
