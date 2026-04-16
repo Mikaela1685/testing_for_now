@@ -70,9 +70,8 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-  uint16_t adcValue;
-  int nSamples = 59;
-  int count = 0;
+  const int stepsPerRev = 200;
+  int32_t CH1_DC = 0;
   char buffer[50];
   /* USER CODE END 1 */
 
@@ -98,7 +97,7 @@ int main(void)
   MX_ADC1_Init();
   MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
-
+  HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -108,6 +107,12 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+
+	HAL_GPIO_WritePin(GPIOA, DirPin_Pin, GPIO_PIN_SET); //Sets direction to high (clockwise)
+
+	//ARR = frequency
+	//PSC = speed
+	//CCR = length of pulse (on)
 	if (count <= nSamples)
 	{
 		HAL_GPIO_WritePin(LD3_GPIO_Port, LD3_Pin, GPIO_PIN_SET); //Sets LD3 LED High, indicate capture start
