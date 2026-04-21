@@ -72,7 +72,7 @@ int main(void)
   uint16_t adcValue;
   int nSamples = 59;
   int count = 0;
-  char buffer[50];
+  char buffer[100];
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -97,6 +97,8 @@ int main(void)
   MX_ADC1_Init();
   /* USER CODE BEGIN 2 */
 
+  sprintf(buffer, "Start Code\r\n");
+  HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), 100);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -116,12 +118,12 @@ int main(void)
 		adcValue = HAL_ADC_GetValue(&hadc1);
 
 		//calculate values
-		double voltage = (adcValue * 3.3) / 4095; //convert to voltage
-		double resistance = (voltage * 1000) / (3.3 - voltage); //find thermistor resistance
-		double tCelsius = (-21.21 * log((resistance) / 1000)) + 72.203;
+		double voltage = (adcValue * 3.3) / 4095.0; //convert to voltage
+		double resistance = (10000.0 * voltage) / (3.3 - voltage); //find thermistor resistance
+		double tCelsius = (-21.21 * log(resistance / 1000.0)) + 72.203;
 
 		//output to display
-		sprintf(buffer, "Temperature = %.2f C\r\n", tCelsius); //formats string and places in buffer
+		sprintf(buffer, "No. %d ADC Value = %u, Volt = %.2f, Res = %.2f Temperature = %.2f C\r\n", count, adcValue, voltage, resistance, tCelsius); //formats string and places in buffer
 		HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), 100); //prints buffer
 
 		//add delay and increment count
@@ -131,6 +133,7 @@ int main(void)
 	else
 	{
 		HAL_ADC_Stop(&hadc1);
+
 	}
 
 	HAL_GPIO_WritePin(LD3_GPIO_Port, LD3_Pin, GPIO_PIN_RESET);
