@@ -4,6 +4,7 @@ Links and Resources
 TIM
 https://wiki.st.com/stm32mcu/wiki/Getting_started_with_TIM#What_is_a_timer_-28TIM-29--
 
+speed of flow = about 200ml/min.
 PWM
 https://madhawapolkotuwa.medium.com/pwm-your-guide-to-timers-frequencies-and-duty-cycles-with-dma-5cb0aa194c36
 - clear info on calculations.
