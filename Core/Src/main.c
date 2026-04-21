@@ -123,7 +123,7 @@ int main(void)
 		double tCelsius = (-21.21 * log(resistance / 1000.0)) + 72.203;
 
 		//output to display
-		sprintf(buffer, "No. %d ADC Value = %u, Volt = %.2f, Res = %.2f Temperature = %.2f C\r\n", count, adcValue, voltage, resistance, tCelsius); //formats string and places in buffer
+		sprintf(buffer, "No. %d Temperature = %.2f C\r\n", count, tCelsius); //formats string and places in buffer
 		HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), 100); //prints buffer
 
 		//add delay and increment count
